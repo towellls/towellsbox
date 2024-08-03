@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 id: e.target.dataset.id,
                 name: e.target.dataset.name
             };
-            alert(`Selected album: ${selectedAlbum.name}`);
+            fetchCoverArt(selectedAlbum.id);
         }
     });
 
@@ -73,15 +73,17 @@ document.addEventListener("DOMContentLoaded", function () {
             // Highlight selected stars
             document.querySelectorAll(".star").forEach(s => s.classList.remove('selected'));
             this.classList.add('selected');
-            this.previousSibling?.classList.add('selected');
-            alert(`Rated: ${rating} stars`);
+            let prevStar = this.previousElementSibling;
+            while (prevStar) {
+                prevStar.classList.add('selected');
+                prevStar = prevStar.previousElementSibling;
+            }
         });
     });
 
     document.querySelector(".heart").addEventListener("click", function () {
         liked = !liked;
         this.classList.toggle('liked');
-        alert(`Liked: ${liked}`);
     });
 
     let pastRatings = {
@@ -103,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderAlbum(rating) {
         return `
             <div class="album">
-                <img src="https://via.placeholder.com/100" alt="${rating.album.name}">
+                <img src="${rating.album.cover}" alt="${rating.album.name}">
                 <span>${rating.album.name}</span>
                 <div>${'★'.repeat(rating.stars)}</div>
                 <div>${rating.liked ? '♥' : ''}</div>
@@ -117,7 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const newRating = {
                 album: {
                     id: selectedAlbum.id,
-                    name: selectedAlbum.name
+                    name: selectedAlbum.name,
+                    cover: selectedAlbum.cover || 'https://via.placeholder.com/100'
                 },
                 stars: rating,
                 liked: liked
@@ -139,6 +142,28 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Please select an album and give a rating.");
         }
     });
+
+    // Fetch cover art using Cover Art Archive API
+    function fetchCoverArt(releaseGroupId) {
+        const url = `https://coverartarchive.org/release-group/${releaseGroupId}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No cover art found');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const imageUrl = data.images[0].thumbnails.large || data.images[0].image;
+                selectedAlbum.cover = imageUrl;
+                alert(`Selected album cover art fetched`);
+            })
+            .catch(error => {
+                console.error('Error fetching cover art:', error);
+                selectedAlbum.cover = 'https://via.placeholder.com/100'; // Fallback to placeholder
+            });
+    }
 
     // Initial render
     renderRatings();

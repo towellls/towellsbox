@@ -118,4 +118,3 @@ document.getElementById("saveRating").addEventListener("click", function() {
 
 // Initial render
 renderRatings();
-

@@ -13,36 +13,8 @@
             <input type="text" placeholder="search">
         </header>
         <main>
-            <div class="plus-button">+</div>
-
-<div id="ratingModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <input type="text" id="albumSearch" placeholder="Search for an album">
-        <div id="searchResults"></div>
-        <div class="rating">
-            <span>Rate: </span>
-            <span class="stars">
-                <span class="star" data-value="1">&#9733;</span>
-                <span class="star" data-value="2">&#9733;</span>
-                <span class="star" data-value="3">&#9733;</span>
-                <span class="star" data-value="4">&#9733;</span>
-                <span class="star" data-value="5">&#9733;</span>
-            </span>
-        </div>
-        <div class="like">
-            <span>Like: </span>
-            <span class="heart">&#9829;</span>
-        </div>
-        <button id="saveRating">Save</button>
-    </div>
-</div>
-
             <div class="albums">
-                <div class="album"><img src="brat.png" alt="brat"><span>brat</span></div>
-                <div class="album"><img src="brat.png" alt="brat"><span>brat</span></div>
-                <div class="album"><img src="brat.png" alt="brat"><span>brat</span></div>
-                <!-- Repeat for other albums -->
+                <!-- Album grid will be dynamically populated by JavaScript -->
             </div>
             <aside>
                 <h2>Popular this week</h2>
@@ -54,6 +26,32 @@
             </aside>
         </main>
     </div>
+
+    <div class="plus-button">+</div>
+
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="text" id="albumSearch" placeholder="Search for an album">
+            <div id="searchResults"></div>
+            <div class="rating">
+                <span>Rate: </span>
+                <span class="stars">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                </span>
+            </div>
+            <div class="like">
+                <span>Like: </span>
+                <span class="heart">&#9829;</span>
+            </div>
+            <button id="saveRating">Save</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

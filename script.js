@@ -70,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".star").forEach(star => {
         star.addEventListener("click", function () {
             rating = this.dataset.value;
+            // Highlight selected stars
+            document.querySelectorAll(".star").forEach(s => s.classList.remove('selected'));
+            this.classList.add('selected');
+            this.previousSibling?.classList.add('selected');
             alert(`Rated: ${rating} stars`);
         });
     });
@@ -100,4 +104,42 @@ document.addEventListener("DOMContentLoaded", function () {
         return `
             <div class="album">
                 <img src="https://via.placeholder.com/100" alt="${rating.album.name}">
-               
+                <span>${rating.album.name}</span>
+                <div>${'★'.repeat(rating.stars)}</div>
+                <div>${rating.liked ? '♥' : ''}</div>
+            </div>
+        `;
+    }
+
+    document.getElementById("saveRating").addEventListener("click", function () {
+        if (selectedAlbum && rating) {
+            // Save the rating
+            const newRating = {
+                album: {
+                    id: selectedAlbum.id,
+                    name: selectedAlbum.name
+                },
+                stars: rating,
+                liked: liked
+            };
+            // For now, add to today's list
+            pastRatings.today.unshift(newRating);
+            // Render the updated ratings grid
+            renderRatings();
+            // Reset the form
+            selectedAlbum = null;
+            rating = 0;
+            liked = false;
+            document.getElementById("albumSearch").value = '';
+            document.getElementById("searchResults").innerHTML = '';
+            document.querySelectorAll(".star").forEach(star => star.classList.remove('selected'));
+            document.querySelector(".heart").classList.remove('liked');
+            modal.style.display = "none";
+        } else {
+            alert("Please select an album and give a rating.");
+        }
+    });
+
+    // Initial render
+    renderRatings();
+});

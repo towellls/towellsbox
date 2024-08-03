@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f4f4f4;
 }
 
 .container {
@@ -29,21 +30,27 @@ header input {
 
 main {
     display: flex;
+    margin-top: 20px;
 }
 
 .albums {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 20px;
     flex: 3;
 }
 
 .album {
     text-align: center;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .album img {
     width: 100%;
+    border-radius: 8px;
 }
 
 aside {
@@ -77,6 +84,9 @@ aside ul li {
     font-size: 2em;
     text-align: center;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal {
@@ -97,7 +107,8 @@ aside ul li {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 50%;
+    border-radius: 10px;
 }
 
 .close {

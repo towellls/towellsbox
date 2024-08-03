@@ -53,24 +53,6 @@ main {
     border-radius: 8px;
 }
 
-aside {
-    flex: 1;
-    padding: 20px;
-}
-
-aside h2 {
-    font-size: 1.5em;
-}
-
-aside ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-aside ul li {
-    margin: 10px 0;
-}
-
 .plus-button {
     position: fixed;
     bottom: 20px;

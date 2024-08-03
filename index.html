@@ -9,19 +9,28 @@
 <body>
     <div class="container">
         <header>
-            <h1>towelbox</h1>
-            <input type="text" placeholder="search">
+            <h1>Towelbox</h1>
         </header>
         <main>
-            <div class="albums">
-                <!-- Album grid will be dynamically populated by JavaScript -->
+            <div class="review-grid">
+                <section class="today">
+                    <h2>Today</h2>
+                    <div class="album-grid" id="todayGrid"></div>
+                </section>
+                <section class="yesterday">
+                    <h2>Yesterday</h2>
+                    <div class="album-grid" id="yesterdayGrid"></div>
+                </section>
+                <section class="this-month">
+                    <h2>This Month</h2>
+                    <div class="album-grid" id="monthGrid"></div>
+                </section>
             </div>
+            <button class="add-review-button" id="addReviewButton">+</button>
         </main>
     </div>
 
-    <div class="plus-button">+</div>
-
-    <div id="ratingModal" class="modal">
+    <div id="reviewModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <input type="text" id="albumSearch" placeholder="Search for an album">

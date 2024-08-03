@@ -44,6 +44,10 @@ section {
 
 .album {
     text-align: center;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .album img {
@@ -107,6 +111,19 @@ section {
 
 .stars {
     cursor: pointer;
+}
+
+.star {
+    color: #d3d3d3;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: #ffcc00;
+}
+
+.star.selected {
+    color: #ffcc00;
 }
 
 .heart {

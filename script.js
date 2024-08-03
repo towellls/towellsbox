@@ -1,33 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Get the modal
-    var modal = document.getElementById("reviewModal");
+    const modal = document.getElementById("reviewModal");
+    const btn = document.getElementById("addReviewButton");
+    const span = document.querySelector(".close");
+    const albumSearchInput = document.getElementById("albumSearch");
+    const searchResultsDiv = document.getElementById("searchResults");
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("addReviewButton");
+    let selectedAlbum = null;
+    let rating = 0;
+    let liked = false;
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal 
+    // Open the modal when the button is clicked
     btn.onclick = function () {
         modal.style.display = "block";
     }
 
-    // When the user clicks on <span> (x), close the modal
+    // Close the modal when the 'x' is clicked
     span.onclick = function () {
         modal.style.display = "none";
     }
 
-    // When the user clicks anywhere outside of the modal, close it
+    // Close the modal when clicking outside of it
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
-
-    let selectedAlbum = null;
-    let rating = 0;
-    let liked = false;
 
     // Function to search for albums using MusicBrainz API
     function searchAlbums(query) {
@@ -42,28 +39,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displaySearchResults(albums) {
-        const searchResultsDiv = document.getElementById("searchResults");
         searchResultsDiv.innerHTML = albums.map(album => `
             <div class="search-result" data-id="${album.id}" data-name="${album.title}">
                 ${album.title} - ${album['artist-credit'][0].name}
             </div>
         `).join('');
+
+        // Add event listeners to search results for album selection
+        document.querySelectorAll(".search-result").forEach(item => {
+            item.addEventListener("click", function () {
+                selectedAlbum = {
+                    id: this.dataset.id,
+                    name: this.dataset.name
+                };
+                fetchCoverArt(selectedAlbum.id);
+            });
+        });
     }
 
-    document.getElementById("albumSearch").addEventListener("input", function () {
+    albumSearchInput.addEventListener("input", function () {
         const query = this.value;
         if (query) {
             searchAlbums(query);
-        }
-    });
-
-    document.getElementById("searchResults").addEventListener("click", function (e) {
-        if (e.target && e.target.matches(".search-result")) {
-            selectedAlbum = {
-                id: e.target.dataset.id,
-                name: e.target.dataset.name
-            };
-            fetchCoverArt(selectedAlbum.id);
         }
     });
 
@@ -115,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("saveRating").addEventListener("click", function () {
         if (selectedAlbum && rating) {
-            // Save the rating
             const newRating = {
                 album: {
                     id: selectedAlbum.id,
@@ -125,16 +121,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 stars: rating,
                 liked: liked
             };
-            // For now, add to today's list
             pastRatings.today.unshift(newRating);
-            // Render the updated ratings grid
             renderRatings();
-            // Reset the form
             selectedAlbum = null;
             rating = 0;
             liked = false;
-            document.getElementById("albumSearch").value = '';
-            document.getElementById("searchResults").innerHTML = '';
+            albumSearchInput.value = '';
+            searchResultsDiv.innerHTML = '';
             document.querySelectorAll(".star").forEach(star => star.classList.remove('selected'));
             document.querySelector(".heart").classList.remove('liked');
             modal.style.display = "none";
@@ -157,14 +150,12 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 const imageUrl = data.images[0].thumbnails.large || data.images[0].image;
                 selectedAlbum.cover = imageUrl;
-                alert(`Selected album cover art fetched`);
             })
             .catch(error => {
                 console.error('Error fetching cover art:', error);
-                selectedAlbum.cover = 'https://via.placeholder.com/100'; // Fallback to placeholder
+                selectedAlbum.cover = 'https://via.placeholder.com/100';
             });
     }
 
-    // Initial render
     renderRatings();
 });
